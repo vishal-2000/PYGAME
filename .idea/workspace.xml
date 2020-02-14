@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="62df0088-7071-41dc-8592-1e59e616556e" name="Default Changelist" comment="" />
+    <list default="true" id="62df0088-7071-41dc-8592-1e59e616556e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing_pycharm.py" beforeDir="false" afterPath="$PROJECT_DIR$/testing_pycharm.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,6 +18,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="JupyterTrust" id="f39cc1f7-afaf-4c31-84e2-72d8d3293162" />
   <component name="ProjectId" id="1XNLuNjdp1QlDKSGKx6Sj5HWSd5" />
   <component name="ProjectViewState">
@@ -23,6 +30,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -90,6 +98,7 @@
       <workItem from="1581597546452" duration="908000" />
       <workItem from="1581603026849" duration="17032000" />
       <workItem from="1581688043881" duration="9783000" />
+      <workItem from="1581705929759" duration="6845000" />
     </task>
     <servers />
   </component>
@@ -105,36 +114,41 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="548" y="186" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1581314860802" />
-    <state width="1493" height="314" key="GridCell.Tab.0.bottom" timestamp="1581704310182">
+    <state width="1493" height="201" key="GridCell.Tab.0.bottom" timestamp="1581712668310">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="314" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1581704310182" />
-    <state width="1493" height="314" key="GridCell.Tab.0.center" timestamp="1581704310181">
+    <state width="1493" height="201" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1581712668310" />
+    <state width="1493" height="201" key="GridCell.Tab.0.center" timestamp="1581712668310">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="314" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1581704310181" />
-    <state width="1493" height="314" key="GridCell.Tab.0.left" timestamp="1581704310181">
+    <state width="1493" height="201" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1581712668310" />
+    <state width="1493" height="201" key="GridCell.Tab.0.left" timestamp="1581712668310">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="314" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1581704310181" />
-    <state width="1493" height="314" key="GridCell.Tab.0.right" timestamp="1581704310181">
+    <state width="1493" height="201" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1581712668310" />
+    <state width="1493" height="201" key="GridCell.Tab.0.right" timestamp="1581712668310">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="314" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1581704310181" />
+    <state width="1493" height="201" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1581712668310" />
     <state x="277" y="74" key="SettingsEditor" timestamp="1581010471236">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="277" y="74" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1581010471236" />
-    <state x="465" y="255" key="com.intellij.ide.util.TipDialog" timestamp="1581688048999">
+    <state x="465" y="255" key="com.intellij.ide.util.TipDialog" timestamp="1581705931651">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="465" y="255" key="com.intellij.ide.util.TipDialog/0.0.1536.864@0.0.1536.864" timestamp="1581688048999" />
+    <state x="465" y="255" key="com.intellij.ide.util.TipDialog/0.0.1536.864@0.0.1536.864" timestamp="1581705931651" />
     <state x="113" y="90" key="scopes" timestamp="1581607254735">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="113" y="90" key="scopes/0.0.1536.864@0.0.1536.864" timestamp="1581607254735" />
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1581712030043">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1581712030043" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/py_test$testing_pycharm.coverage" NAME="testing_pycharm Coverage Results" MODIFIED="1581704310163" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PYGAME$testing_pycharm.coverage" NAME="testing_pycharm Coverage Results" MODIFIED="1581712668304" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
