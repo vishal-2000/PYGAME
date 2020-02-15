@@ -1,6 +1,6 @@
 # lets start pyGAMING
 import pygame
-
+import ConfigParser
 pygame.init()
 
 win = pygame.display.set_mode((640, 866 - 80))
