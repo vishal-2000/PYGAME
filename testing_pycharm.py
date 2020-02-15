@@ -10,11 +10,15 @@ pygame.display.set_caption("River Crossing")
 
 w_width = 640
 w_height = 640
-level = 0
+# level = 0
+dead = [False, False]
+success = [False, False]
 # score = 0
 # score_2 = 0
 score = [0, 0]  # here score[1] represents player 1, score[2] represents player 2
 player_no = 0  # reports player no. ----- player_1 = 0, player_2 = 1
+# ************************************************* Creating Flags ****************************************************
+flag = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 # *********************************************** Sounds **************************************************************
 
@@ -36,7 +40,9 @@ clock = pygame.time.Clock()
 
 # ***************************************** Players *******************************************************************
 class PLAYER(object):
-    def __init__(self, x, y, width, height, play_no):
+    def __init__(self, x, y, width, height, play_no, level):
+        self.level = level
+        self.time_start = 0
         self.play_no = play_no
         self.x = x
         self.y = y
@@ -44,6 +50,7 @@ class PLAYER(object):
         self.height = height
         self.vel = 5
         self.hit_box = (self.x, self.y, 64, 64)
+        self.time = 0
 
     def draw(self, win):
         win.blit(char, (self.x, self.y))
@@ -52,11 +59,14 @@ class PLAYER(object):
 
     def hit(self):
         hitSound.play()
+        print("Hit !!! player no : " + str(self.play_no) + " y : " + str(self.y) + " x : ", self.x)
         font1 = pygame.font.SysFont('comicsans', 80)
         text = font1.render('You got Hit -10', 1, (255, 0, 0))
         win.blit(text, (320 - (text.get_width() // 2), 100))
         pygame.display.update()
         j = 0
+        time_end = pygame.time.get_ticks()
+        self.time = time_end - self.time_start
         self.x = w_width // 2 - 32
         if self.play_no == 0:
             self.y = w_height - 64
@@ -76,6 +86,8 @@ class PLAYER(object):
         text = font1.render('You have reached the other end !!!', 1, (255, 0, 0))
         win.blit(text, (320 - (text.get_width() // 2), 200))
         pygame.display.update()
+        time_end = pygame.time.get_ticks()
+        self.time = time_end - self.time_start
         self.x = w_width // 2 - 32
         if player_no == 0:
             self.y = w_height - 64
@@ -101,21 +113,24 @@ class ENEMY(object):
         self.width = width
         self.height = height
         # self.end = end
-        self.vel = 5
+        self.vel = 3
         self.hit_box = (self.x, self.y, 64, 64)
+        self.z = 0
 
-    def draw(self, win):
-        self.move()
-        win.blit(char_2, (self.x, self.y))
-        self.hit_box = (self.x, self.y, 64, 64)
-        pygame.draw.rect(win, (255, 0, 0), self.hit_box, 2)
-
-    def move(self):
+    def move(self, v):
         if self.vel > 0:
             if self.x >= w_width:
                 self.x = -64
             else:
-                self.x += self.vel
+                self.z = v
+                self.x += self.vel + self.z
+                print(self.vel + self.z)
+
+    def draw(self, win):
+        self.move(self.z)
+        win.blit(char_2, (self.x, self.y))
+        self.hit_box = (self.x, self.y, 64, 64)
+        pygame.draw.rect(win, (255, 0, 0), self.hit_box, 2)
 
 
 # ********************************************* fixed obstacles *******************************************************
@@ -153,6 +168,10 @@ def redraw_game_window():
     text_2 = font.render("Score: " + str(score[1]), 1, (0, 0, 0))
     win.blit(text_1, (500, 20))
     win.blit(text_2, (10, 20))
+    text_3 = font.render("Level: " + str(player[0].level), 1, (0, 0, 0))
+    text_4 = font.render("Level: " + str(player[1].level), 1, (0, 0, 0))
+    win.blit(text_3, (500, 640 - 44))
+    win.blit(text_4, (10, 640 - 44))
     pygame.display.update()
 
 
@@ -160,7 +179,7 @@ def redraw_game_window():
 # ********************************  creating objects of various classes  *********************************************
 run = True
 
-player = [PLAYER(w_width // 2 - 32, w_height - 64, 64, 64, 0), PLAYER(w_width // 2 - 32, 0, 64, 64, 1)]
+player = [PLAYER(w_width // 2 - 32, w_height - 64, 64, 64, 0, 0), PLAYER(w_width // 2 - 32, 0, 64, 64, 1, 0)]
 ship = [ENEMY(-64, w_height - 64 - 80, 64, 64),
         ENEMY(-64 + 100, w_height - 2 * 64 - 2 * 80, 64, 64),
         ENEMY(-64 + 350, w_height - 3 * 64 - 3 * 80, 64, 64),
@@ -183,39 +202,203 @@ obstacle = [FIXED_OBSTACLE(w_width // 3 - 32, w_height - 64, 64, 64),
             FIXED_OBSTACLE(2 * w_width // 3 - 32, w_height - 64 - 4 * 80 - 4 * 64, 64, 64)]
 
 
+# ************************************************** collision check **************************************************
 def check(i):
-    global score, player_no
+    global score, player_no, flag
     if player[player_no].hit_box[1] < i.hit_box[1] + i.hit_box[3]:
         if player[player_no].hit_box[1] + player[player_no].hit_box[3] > i.hit_box[1]:
             if player[player_no].hit_box[0] + player[player_no].hit_box[2] > i.hit_box[0]:
                 if player[player_no].hit_box[0] < i.hit_box[0] + i.hit_box[2]:
                     player[player_no].hit()
+                    dead[player_no] = True
                     score[player_no] -= 10
+                    flag[0] = 0
+                    flag[1] = 0
+                    flag[2] = 0
+                    flag[3] = 0
+                    flag[4] = 0
+                    flag[5] = 0
+                    flag[6] = 0
+                    flag[7] = 0
+                    flag[8] = 0
                     if player_no == 0:
                         player_no = 1
                     else:
                         player_no = 0
+                    player[player_no].time_start = pygame.time.get_ticks()
+                    redraw_game_window()
 
 
 # **************************************************** main loop ******************************************************
-
+player[0].time_start = pygame.time.get_ticks()
 while run:
+    # print(player[0].time_start)
     clock.tick(27)
+# ************************************************ hit/not hit ********************************************************
     for i in ship:
         check(i)
     for i in obstacle:
         check(i)
+# ************************************************ check win/lose *****************************************************
     if player[player_no].y <= 2 and player_no == 0:
+        score[0] += 15
         player[player_no].winner()
+        success[player_no] = True
         player_no = 1
-    elif player[player_no].y >= (798 - 64) and player_no == 1:
+        flag[0] = 0
+        flag[1] = 0
+        flag[2] = 0
+        flag[3] = 0
+        flag[4] = 0
+        flag[5] = 0
+        flag[6] = 0
+        flag[7] = 0
+        flag[8] = 0
+        player[player_no].time_start = pygame.time.get_ticks()
+        redraw_game_window()
+    elif player[player_no].y >= (w_height - 2 - 64) and player_no == 1:
+        score[1] += 15
         player[player_no].winner()
+        success[player_no] = True
         player_no = 0
+        flag[0] = 0
+        flag[1] = 0
+        flag[2] = 0
+        flag[3] = 0
+        flag[4] = 0
+        flag[5] = 0
+        flag[6] = 0
+        flag[7] = 0
+        flag[8] = 0
+        player[player_no].time_start = pygame.time.get_ticks()
+        redraw_game_window()
+# ************************************************ End of the Game ****************************************************
+    if dead[1] or success[1]:
+        if score[0] > score[1]:
+            winSound.play()
+            font1 = pygame.font.SysFont('comicsans', 50)
+            text_1 = font1.render('Player 1 : Won !!! ', 1, (255, 0, 0))
+            text_2 = font1.render('Player 2 : Lost !!! ', 1, (255, 0, 0))
+            win.blit(text_1, (320 - (text_1.get_width() // 2), 200))
+            win.blit(text_2, (320 - (text_2.get_width() // 2), 300))
+            pygame.display.update()
+        elif score[1] > score[0]:
+            winSound.play()
+            font1 = pygame.font.SysFont('comicsans', 50)
+            text_1 = font1.render('Player 1 : Lost !!! ', 1, (255, 0, 0))
+            text_2 = font1.render('Player 2 : Won !!! ', 1, (255, 0, 0))
+            win.blit(text_1, (320 - (text_1.get_width() // 2), 200))
+            win.blit(text_2, (320 - (text_2.get_width() // 2), 300))
+            pygame.display.update()
+        else:
+            winSound.play()
+            font1 = pygame.font.SysFont('comicsans', 50)
+            text_0 = font1.render('Time 1 : ' + str(player[0].time), 1, (255, 0, 0))
+            text_1 = font1.render('Time 2 : ' + str(player[1].time), 1, (255, 0, 0))
+            if str(player[0].time) < str(player[1].time):
+                text_2 = font1.render('Player 1 : Won !!! ', 1, (255, 0, 0))
+                text_3 = font1.render('Player 2 : Lost !!! ', 1, (255, 0, 0))
+            else:
+                text_2 = font1.render('Player 2 : Won !!! ', 1, (255, 0, 0))
+                text_3 = font1.render('Player 1 : Lost !!! ', 1, (255, 0, 0))
+            win.blit(text_0, (320 - (text_1.get_width() // 2), 100))
+            win.blit(text_1, (320 - (text_1.get_width() // 2), 200))
+            win.blit(text_2, (320 - (text_2.get_width() // 2), 300))
+            win.blit(text_3, (320 - (text_2.get_width() // 2), 400))
+            pygame.display.update()
+        if success[0]:
+            player[0].level += 1
+        if success[1]:
+            player[1].level += 1
+        j = 0
+        while j < 300:
+            pygame.time.delay(10)
+            j += 1
+            for x_event in pygame.event.get():
+                if x_event.type == pygame.QUIT:
+                    j = 301
+                    pygame.quit()
+        score[1] = 0
+        score[0] = 0
+        dead[0] = False
+        dead[1] = False
+        success[0] = False
+        success[1] = False
+        player[0].time_start = pygame.time.get_ticks()
+
+
+# *************************************************** Scoring *********************************************************
+    if player_no == 0:
+        if player[player_no].y < w_width - 2 * 64 - 2 and flag[0] == 0:
+            score[0] += 5
+            print("scored 0")
+            flag[0] = 1
+        if player[player_no].y < w_width - 2 * 64 - 80 - 2 and flag[1] == 0:
+            score[0] += 10
+            print("scored 0")
+            flag[1] = 1
+        if player[player_no].y < w_width - 3 * 64 - 80 - 2 and flag[2] == 0:
+            score[0] += 5
+            print("scored 0")
+            flag[2] = 1
+        if player[player_no].y < w_width - 3 * 64 - 2 * 80 - 2 and flag[3] == 0:
+            score[0] += 10
+            print("scored 0")
+            flag[3] = 1
+        if player[player_no].y < w_width - 4 * 64 - 2 * 80 - 2 and flag[4] == 0:
+            score[0] += 5
+            print("scored 0")
+            flag[4] = 1
+        if player[player_no].y < w_width - 4 * 64 - 3 * 80 - 2 and flag[5] == 0:
+            score[0] += 10
+            print("scored 0")
+            flag[5] = 1
+        if player[player_no].y < w_width - 5 * 64 - 3 * 80 - 2 and flag[6] == 0:
+            score[0] += 5
+            print("scored 0")
+            flag[6] = 1
+        if player[player_no].y < 2 and flag[7] == 0:
+            score[0] += 10
+            print("scored 0")
+            flag[7] = 1
+    if player_no == 1:
+        if player[player_no].y > 4 * 64 + 4 * 80 + 2 and flag[0] == 0:
+            score[1] += 10
+            print("scored 0")
+            flag[0] = 1
+        if player[player_no].y > 4 * 64 + 2 * 80 + 2 and flag[1] == 0:
+            score[1] += 5
+            print("scored 0")
+            flag[1] = 1
+        if player[player_no].y > 3 * 64 + 3 * 80 + 2 and flag[2] == 0:
+            score[1] += 10
+            print("scored 0")
+            flag[2] = 1
+        if player[player_no].y > 3 * 64 + 2 * 80 + 2 and flag[3] == 0:
+            score[1] += 5
+            print("scored 0")
+            flag[3] = 1
+        if player[player_no].y > 2 * 64 + 2 * 80 + 2 and flag[4] == 0:
+            score[1] += 10
+            print("scored 0")
+            flag[4] = 1
+        if player[player_no].y > 2 * 64 + 80 + 2 and flag[5] == 0:
+            score[1] += 5
+            print("scored 0")
+            flag[5] = 1
+        if player[player_no].y > 64 + 80 + 2 and flag[6] == 0:
+            score[1] += 10
+            print("scored 0")
+            flag[6] = 1
+        if player[player_no].y > 64 + 2 and flag[7] == 0:
+            score[1] += 5
+            print("scored 0")
+            flag[7] = 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
     for i in ship:
-        i.move()
+        i.move(player[player_no].level)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] and player[player_no].x > player[player_no].vel:
         player[player_no].x -= player[player_no].vel
