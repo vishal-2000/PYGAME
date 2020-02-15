@@ -1,20 +1,23 @@
 # lets start pyGAMING
 import pygame
-import ConfigParser
+import configparser
 pygame.init()
-
+configParser = configparser.RawConfigParser()
+configParser.read('config.cfg')
+name = configParser.get('info', 'Name')
 win = pygame.display.set_mode((640, 866 - 80))
-pygame.display.set_caption("River Crossing")
+pygame.display.set_caption(name)
+# ********************************************* config messages *******************************************************
+gameover = configParser.get('info', 'gameover')
+success = configParser.get('info', 'success')
+pone_win = configParser.get('info', 'Pwin')
+pone_los = configParser.get('info', 'Plos')
 
 # ********************************************* GLOBAL VARIABLES ******************************************************
-
-w_width = 640
-w_height = 866 - 80
-# level = 0
+w_width = configParser.getint('info', 'W_WIDTH')
+w_height = configParser.getint('info', 'W_HEIGHT')
 dead = [False, False]
 success = [False, False]
-# score = 0
-# score_2 = 0
 score = [0, 0]  # here score[1] represents player 1, score[2] represents player 2
 player_no = 0  # reports player no. ----- player_1 = 0, player_2 = 1
 # ************************************************* Creating Flags ****************************************************
@@ -68,7 +71,7 @@ class PLAYER(object):
         music = pygame.mixer.music.load('hit2.mp3')
         pygame.mixer.music.play(1)
         print("Hit !!! player no : " + str(self.play_no) + " y : " + str(self.y) + " x : ", self.x)
-        font1 = pygame.font.SysFont('comicsans', 80)
+        font1 = pygame.font.SysFont(configParser.get('info', 'FONT'), 80)
         text = font1.render('G A M E O V E R', 1, (255, 255, 255))
         win.blit(text, (320 - (text.get_width() // 2), 400))
         pygame.display.update()
@@ -95,7 +98,8 @@ class PLAYER(object):
         pygame.display.update()
         music = pygame.mixer.music.load('Ending.mp3')
         pygame.mixer.music.play(1)
-        font1 = pygame.font.SysFont('comicsans', 50)
+        configParser.get('info', 'Name')
+        font1 = pygame.font.SysFont(configParser.get('info', 'FONT'), 50)
         text = font1.render('Success !!!', 1, (255, 255, 255))
         win.blit(text, (320 - (text.get_width() // 2), 200))
         pygame.display.update()
@@ -202,7 +206,7 @@ ship = [ENEMY(-64, w_height - 64 - 80, 64, 64),
         ENEMY(-64 + 350, w_height - 3 * 64 - 3 * 80, 64, 64),
         ENEMY(-64 + 500, w_height - 4 * 64 - 4 * 80 + 3, 64, 64),
         ENEMY(-64 + 350, w_height - 5 * 64 - 5 * 80 + 3, 64, 64)]
-font = pygame.font.SysFont('comicsans', 30, True, True)
+font = pygame.font.SysFont(configParser.get('info', 'FONT'), 30, True, True)
 
 obstacle = [FIXED_OBSTACLE(w_width // 3 - 32, w_height - 64, 64, 64),
             FIXED_OBSTACLE(2 * w_width // 3 - 32, w_height - 64, 64, 64),
@@ -303,7 +307,7 @@ while run:
         pygame.display.update()
         music = pygame.mixer.music.load('Ending.mp3')
         pygame.mixer.music.play(1)
-        font1 = pygame.font.SysFont('comicsans', 30)
+        font1 = pygame.font.SysFont(configParser.get('info', 'FONT'), 30)
         text_1 = font1.render('Player 1 : Score: ' + str(score[0]), 1, (255, 0, 0))
         text_2 = font1.render('Player 2 : Score: ' + str(score[1]), 1, (255, 0, 0))
         text_3 = font1.render('Player 1 : Time: ' + str(player[0].time / 1000), 1, (255, 0, 0))
@@ -313,21 +317,21 @@ while run:
         win.blit(text_2, (50, 500))
         win.blit(text_4, (640 - 40 - (text_2.get_width()), 500))
         if score[0] > score[1]:
-            font1 = pygame.font.SysFont('comicsans', 50)
+            font1 = pygame.font.SysFont(configParser.get('info', 'FONT'), 50)
             text_1 = font1.render('Player 1 : Won !!! ', 1, (255, 0, 0))
             text_2 = font1.render('Player 2 : Lost !!! ', 1, (255, 0, 0))
             win.blit(text_1, (320 - (text_1.get_width() // 2), 200))
             win.blit(text_2, (320 - (text_2.get_width() // 2), 300))
             pygame.display.update()
         elif score[1] > score[0]:
-            font1 = pygame.font.SysFont('comicsans', 50)
+            font1 = pygame.font.SysFont(configParser.get('info', 'FONT'), 50)
             text_1 = font1.render('Player 1 : Lost !!! ', 1, (255, 0, 0))
             text_2 = font1.render('Player 2 : Won !!! ', 1, (255, 0, 0))
             win.blit(text_1, (320 - (text_1.get_width() // 2), 200))
             win.blit(text_2, (320 - (text_2.get_width() // 2), 300))
             pygame.display.update()
         else:
-            font1 = pygame.font.SysFont('comicsans', 50)
+            font1 = pygame.font.SysFont(configParser.get('info', 'FONT'), 50)
             # text_0 = font1.render('Time 1 : ' + str(player[0].time), 1, (255, 0, 0))
             # text_1 = font1.render('Time 2 : ' + str(player[1].time), 1, (255, 0, 0))
             if str(player[0].time) < str(player[1].time):
