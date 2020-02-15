@@ -3,13 +3,13 @@ import pygame
 
 pygame.init()
 
-win = pygame.display.set_mode((640, 640))
+win = pygame.display.set_mode((640, 866 - 80))
 pygame.display.set_caption("River Crossing")
 
 # ********************************************* GLOBAL VARIABLES ******************************************************
 
 w_width = 640
-w_height = 640
+w_height = 866 - 80
 # level = 0
 dead = [False, False]
 success = [False, False]
@@ -18,21 +18,22 @@ success = [False, False]
 score = [0, 0]  # here score[1] represents player 1, score[2] represents player 2
 player_no = 0  # reports player no. ----- player_1 = 0, player_2 = 1
 # ************************************************* Creating Flags ****************************************************
-flag = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+flag = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 # *********************************************** Sounds **************************************************************
 
 winSound = pygame.mixer.Sound('winn.wav')
-hitSound = pygame.mixer.Sound('hit.wav')
+# hitSound = pygame.mixer.Sound('hit.wav')
 music = pygame.mixer.music.load('main_music.mp3')
 pygame.mixer.music.play(-1)
 
 # *********************************************** Images **************************************************************
 
 bg = pygame.image.load('water.jpg')
-char = pygame.image.load('ball.png')
+char = pygame.image.load('spaceship.png')
 char_2 = pygame.image.load('ship.png')
-char_3 = pygame.image.load('tornado.png')
+char_3 = pygame.image.load('tower.png')
+char_4 = pygame.image.load('ispaceship.png')
 
 # ************************************************ Clock Time *********************************************************
 clock = pygame.time.Clock()
@@ -53,16 +54,23 @@ class PLAYER(object):
         self.time = 0
 
     def draw(self, win):
-        win.blit(char, (self.x, self.y))
+        if self.play_no == 0:
+            win.blit(char, (self.x, self.y))
+        else:
+            win.blit(char_4, (self.x, self.y))
         self.hit_box = (self.x, self.y, 64, 64)
         pygame.draw.rect(win, (255, 0, 0), self.hit_box, 2)
 
     def hit(self):
-        hitSound.play()
+        # pygame.mixer.hitSound.play(1)
+        win.fill([0, 0, 0])
+        pygame.display.update()
+        music = pygame.mixer.music.load('hit2.mp3')
+        pygame.mixer.music.play(1)
         print("Hit !!! player no : " + str(self.play_no) + " y : " + str(self.y) + " x : ", self.x)
         font1 = pygame.font.SysFont('comicsans', 80)
-        text = font1.render('You got Hit -10', 1, (255, 0, 0))
-        win.blit(text, (320 - (text.get_width() // 2), 100))
+        text = font1.render('G A M E O V E R', 1, (255, 255, 255))
+        win.blit(text, (320 - (text.get_width() // 2), 400))
         pygame.display.update()
         j = 0
         time_end = pygame.time.get_ticks()
@@ -72,18 +80,23 @@ class PLAYER(object):
             self.y = w_height - 64
         elif self.play_no == 1:
             self.y = 0
-        while j < 300:
+        while j < 350:
             pygame.time.delay(10)
             j += 1
             for x_event in pygame.event.get():
                 if x_event.type == pygame.QUIT:
-                    j = 301
+                    j = 351
                     pygame.quit()
+        music = pygame.mixer.music.load('main_music.mp3')
+        pygame.mixer.music.play(-1)
 
     def winner(self):
-        winSound.play()
+        win.fill([0, 0, 0])
+        pygame.display.update()
+        music = pygame.mixer.music.load('Ending.mp3')
+        pygame.mixer.music.play(1)
         font1 = pygame.font.SysFont('comicsans', 50)
-        text = font1.render('You have reached the other end !!!', 1, (255, 0, 0))
+        text = font1.render('Success !!!', 1, (255, 255, 255))
         win.blit(text, (320 - (text.get_width() // 2), 200))
         pygame.display.update()
         time_end = pygame.time.get_ticks()
@@ -102,6 +115,8 @@ class PLAYER(object):
                 if x_event.type == pygame.QUIT:
                     j = 301
                     pygame.quit()
+        music = pygame.mixer.music.load('main_music.mp3')
+        pygame.mixer.music.play(-1)
 
 
 # ***************************************** Moving obstacles **********************************************************
@@ -109,7 +124,7 @@ class PLAYER(object):
 class ENEMY(object):
     def __init__(self, x, y, width, height):
         self.x = x
-        self.y = y
+        self.y = y + 7
         self.width = width
         self.height = height
         # self.end = end
@@ -123,13 +138,13 @@ class ENEMY(object):
                 self.x = -64
             else:
                 self.z = v
-                self.x += self.vel + self.z
-                print(self.vel + self.z)
+                self.x += self.vel + self.z * 0.5
+                print(self.vel + self.z * 0.5)
 
     def draw(self, win):
         self.move(self.z)
         win.blit(char_2, (self.x, self.y))
-        self.hit_box = (self.x, self.y, 64, 64)
+        self.hit_box = (self.x, self.y + 3, 64, 64 - 8 - 3)
         pygame.draw.rect(win, (255, 0, 0), self.hit_box, 2)
 
 
@@ -152,7 +167,9 @@ class FIXED_OBSTACLE(object):
 # ******************************************* redraw window ***********************************************************
 
 def redraw_game_window():
-    win.blit(bg, (0, 0))
+    # win.blit(bg, (0, 0))
+    win.fill([0, 150, 255])
+    pygame.draw.rect(win, (150, 75, 0), (0, w_height - 64 - 5 * 80 - 5 * 64, w_width, 64))
     pygame.draw.rect(win, (150, 75, 0), (0, w_height - 64 - 4 * 80 - 4 * 64, w_width, 64))
     pygame.draw.rect(win, (150, 75, 0), (0, w_height - 64 - 3 * 80 - 3 * 64, w_width, 64))
     pygame.draw.rect(win, (150, 75, 0), (0, w_height - 64 - 2 * 80 - 2 * 64, w_width, 64))
@@ -164,14 +181,14 @@ def redraw_game_window():
         x.draw(win)
     for x in obstacle:
         x.draw(win)
-    text_1 = font.render("Score: " + str(score[0]), 1, (0, 0, 0))
-    text_2 = font.render("Score: " + str(score[1]), 1, (0, 0, 0))
-    win.blit(text_1, (500, 20))
+    text_1 = font.render("Score P1: " + str(score[0]), 1, (0, 0, 0))
+    text_2 = font.render("Score P2: " + str(score[1]), 1, (0, 0, 0))
+    win.blit(text_1, (475, 20))
     win.blit(text_2, (10, 20))
-    text_3 = font.render("Level: " + str(player[0].level), 1, (0, 0, 0))
-    text_4 = font.render("Level: " + str(player[1].level), 1, (0, 0, 0))
-    win.blit(text_3, (500, 640 - 44))
-    win.blit(text_4, (10, 640 - 44))
+    text_3 = font.render("Level P1: " + str(player[0].level), 1, (0, 0, 0))
+    text_4 = font.render("Level P2: " + str(player[1].level), 1, (0, 0, 0))
+    win.blit(text_3, (475, w_height - 44))
+    win.blit(text_4, (10, w_height - 44))
     pygame.display.update()
 
 
@@ -183,7 +200,8 @@ player = [PLAYER(w_width // 2 - 32, w_height - 64, 64, 64, 0, 0), PLAYER(w_width
 ship = [ENEMY(-64, w_height - 64 - 80, 64, 64),
         ENEMY(-64 + 100, w_height - 2 * 64 - 2 * 80, 64, 64),
         ENEMY(-64 + 350, w_height - 3 * 64 - 3 * 80, 64, 64),
-        ENEMY(-64 + 500, w_height - 4 * 64 - 4 * 80 + 3, 64, 64)]
+        ENEMY(-64 + 500, w_height - 4 * 64 - 4 * 80 + 3, 64, 64),
+        ENEMY(-64 + 350, w_height - 5 * 64 - 5 * 80 + 3, 64, 64)]
 font = pygame.font.SysFont('comicsans', 30, True, True)
 
 obstacle = [FIXED_OBSTACLE(w_width // 3 - 32, w_height - 64, 64, 64),
@@ -198,8 +216,12 @@ obstacle = [FIXED_OBSTACLE(w_width // 3 - 32, w_height - 64, 64, 64),
             FIXED_OBSTACLE(w_width // 4 - 32, w_height - 64 - 3 * 80 - 3 * 64, 64, 64),
             FIXED_OBSTACLE(2 * w_width // 4 - 32, w_height - 64 - 3 * 80 - 3 * 64, 64, 64),
             FIXED_OBSTACLE(3 * w_width // 4 - 32, w_height - 64 - 3 * 80 - 3 * 64, 64, 64),
-            FIXED_OBSTACLE(w_width // 3 - 32, w_height - 64 - 4 * 80 - 4 * 64, 64, 64),
-            FIXED_OBSTACLE(2 * w_width // 3 - 32, w_height - 64 - 4 * 80 - 4 * 64, 64, 64)]
+            FIXED_OBSTACLE(0, w_height - 64 - 4 * 80 - 4 * 64, 64, 64),
+            FIXED_OBSTACLE(1 * w_width // 3 - 32, w_height - 64 - 4 * 80 - 4 * 64, 64, 64),
+            FIXED_OBSTACLE(2 * w_width // 3 - 32, w_height - 64 - 4 * 80 - 4 * 64, 64, 64),
+            FIXED_OBSTACLE(w_width - 64, w_height - 64 - 4 * 80 - 4 * 64, 64, 64),
+            FIXED_OBSTACLE(w_width // 3 - 32, w_height - 64 - 5 * 80 - 5 * 64, 64, 64),
+            FIXED_OBSTACLE(2 * w_width // 3 - 32, w_height - 64 - 5 * 80 - 5 * 64, 64, 64)]
 
 
 # ************************************************** collision check **************************************************
@@ -221,6 +243,7 @@ def check(i):
                     flag[6] = 0
                     flag[7] = 0
                     flag[8] = 0
+                    flag[9] = 0
                     if player_no == 0:
                         player_no = 1
                     else:
@@ -254,6 +277,7 @@ while run:
         flag[6] = 0
         flag[7] = 0
         flag[8] = 0
+        flag[9] = 0
         player[player_no].time_start = pygame.time.get_ticks()
         redraw_game_window()
     elif player[player_no].y >= (w_height - 2 - 64) and player_no == 1:
@@ -270,12 +294,25 @@ while run:
         flag[6] = 0
         flag[7] = 0
         flag[8] = 0
+        flag[9] = 0
         player[player_no].time_start = pygame.time.get_ticks()
         redraw_game_window()
 # ************************************************ End of the Game ****************************************************
     if dead[1] or success[1]:
+        win.fill([0, 0, 0])
+        pygame.display.update()
+        music = pygame.mixer.music.load('Ending.mp3')
+        pygame.mixer.music.play(1)
+        font1 = pygame.font.SysFont('comicsans', 30)
+        text_1 = font1.render('Player 1 : Score: ' + str(score[0]), 1, (255, 0, 0))
+        text_2 = font1.render('Player 2 : Score: ' + str(score[1]), 1, (255, 0, 0))
+        text_3 = font1.render('Player 1 : Time: ' + str(player[0].time / 1000), 1, (255, 0, 0))
+        text_4 = font1.render('Player 1 : Time: ' + str(player[1].time / 1000), 1, (255, 0, 0))
+        win.blit(text_1, (50, 400))
+        win.blit(text_3, (640 - 40 - (text_2.get_width()), 400))
+        win.blit(text_2, (50, 500))
+        win.blit(text_4, (640 - 40 - (text_2.get_width()), 500))
         if score[0] > score[1]:
-            winSound.play()
             font1 = pygame.font.SysFont('comicsans', 50)
             text_1 = font1.render('Player 1 : Won !!! ', 1, (255, 0, 0))
             text_2 = font1.render('Player 2 : Lost !!! ', 1, (255, 0, 0))
@@ -283,7 +320,6 @@ while run:
             win.blit(text_2, (320 - (text_2.get_width() // 2), 300))
             pygame.display.update()
         elif score[1] > score[0]:
-            winSound.play()
             font1 = pygame.font.SysFont('comicsans', 50)
             text_1 = font1.render('Player 1 : Lost !!! ', 1, (255, 0, 0))
             text_2 = font1.render('Player 2 : Won !!! ', 1, (255, 0, 0))
@@ -291,32 +327,34 @@ while run:
             win.blit(text_2, (320 - (text_2.get_width() // 2), 300))
             pygame.display.update()
         else:
-            winSound.play()
             font1 = pygame.font.SysFont('comicsans', 50)
-            text_0 = font1.render('Time 1 : ' + str(player[0].time), 1, (255, 0, 0))
-            text_1 = font1.render('Time 2 : ' + str(player[1].time), 1, (255, 0, 0))
+            # text_0 = font1.render('Time 1 : ' + str(player[0].time), 1, (255, 0, 0))
+            # text_1 = font1.render('Time 2 : ' + str(player[1].time), 1, (255, 0, 0))
             if str(player[0].time) < str(player[1].time):
                 text_2 = font1.render('Player 1 : Won !!! ', 1, (255, 0, 0))
                 text_3 = font1.render('Player 2 : Lost !!! ', 1, (255, 0, 0))
-            else:
+            elif str(player[0].time) > str(player[1].time):
                 text_2 = font1.render('Player 2 : Won !!! ', 1, (255, 0, 0))
                 text_3 = font1.render('Player 1 : Lost !!! ', 1, (255, 0, 0))
-            win.blit(text_0, (320 - (text_1.get_width() // 2), 100))
-            win.blit(text_1, (320 - (text_1.get_width() // 2), 200))
-            win.blit(text_2, (320 - (text_2.get_width() // 2), 300))
-            win.blit(text_3, (320 - (text_2.get_width() // 2), 400))
+            else:
+                text_2 = font1.render('Player 2 : Draw !!! ', 1, (255, 0, 0))
+                text_3 = font1.render('Player 1 : Draw !!! ', 1, (255, 0, 0))
+            # win.blit(text_0, (320 - (text_1.get_width() // 2), 100))
+            # win.blit(text_1, (320 - (text_1.get_width() // 2), 200))
+            win.blit(text_2, (320 - (text_2.get_width() // 2), 200))
+            win.blit(text_3, (320 - (text_2.get_width() // 2), 300))
             pygame.display.update()
         if success[0]:
             player[0].level += 1
         if success[1]:
             player[1].level += 1
         j = 0
-        while j < 300:
+        while j < 650:
             pygame.time.delay(10)
             j += 1
             for x_event in pygame.event.get():
                 if x_event.type == pygame.QUIT:
-                    j = 301
+                    j = 651
                     pygame.quit()
         score[1] = 0
         score[0] = 0
@@ -325,7 +363,8 @@ while run:
         success[0] = False
         success[1] = False
         player[0].time_start = pygame.time.get_ticks()
-
+        music = pygame.mixer.music.load('main_music.mp3')
+        pygame.mixer.music.play(-1)
 
 # *************************************************** Scoring *********************************************************
     if player_no == 0:
@@ -357,43 +396,59 @@ while run:
             score[0] += 5
             print("scored 0")
             flag[6] = 1
-        if player[player_no].y < 2 and flag[7] == 0:
+        if player[player_no].y < w_width - 5 * 64 - 3 * 80 - 2 and flag[7] == 0:
             score[0] += 10
             print("scored 0")
             flag[7] = 1
+        if player[player_no].y < w_width - 5 * 64 - 3 * 80 - 2 and flag[8] == 0:
+            score[0] += 5
+            print("scored 0")
+            flag[8] = 1
+        if player[player_no].y < 4 and flag[9] == 0:
+            score[0] += 10
+            print("scored 0")
+            flag[9] = 1
     if player_no == 1:
-        if player[player_no].y > 4 * 64 + 4 * 80 + 2 and flag[0] == 0:
+        if player[player_no].y > 5 * 64 + 5 * 80 + 2 and flag[0] == 0:
             score[1] += 10
             print("scored 0")
             flag[0] = 1
-        if player[player_no].y > 4 * 64 + 2 * 80 + 2 and flag[1] == 0:
+        if player[player_no].y > 5 * 64 + 4 * 80 + 2 and flag[1] == 0:
             score[1] += 5
             print("scored 0")
             flag[1] = 1
-        if player[player_no].y > 3 * 64 + 3 * 80 + 2 and flag[2] == 0:
+        if player[player_no].y > 4 * 64 + 4 * 80 + 2 and flag[2] == 0:
             score[1] += 10
             print("scored 0")
             flag[2] = 1
-        if player[player_no].y > 3 * 64 + 2 * 80 + 2 and flag[3] == 0:
+        if player[player_no].y > 4 * 64 + 3 * 80 + 2 and flag[3] == 0:
             score[1] += 5
             print("scored 0")
             flag[3] = 1
-        if player[player_no].y > 2 * 64 + 2 * 80 + 2 and flag[4] == 0:
+        if player[player_no].y > 3 * 64 + 3 * 80 + 2 and flag[4] == 0:
             score[1] += 10
             print("scored 0")
             flag[4] = 1
-        if player[player_no].y > 2 * 64 + 80 + 2 and flag[5] == 0:
+        if player[player_no].y > 3 * 64 + 2 * 80 + 2 and flag[5] == 0:
             score[1] += 5
             print("scored 0")
             flag[5] = 1
-        if player[player_no].y > 64 + 80 + 2 and flag[6] == 0:
+        if player[player_no].y > 2 * 64 + 2 * 80 + 2 and flag[6] == 0:
             score[1] += 10
             print("scored 0")
             flag[6] = 1
-        if player[player_no].y > 64 + 2 and flag[7] == 0:
+        if player[player_no].y > 2 * 64 + 80 + 2 and flag[7] == 0:
             score[1] += 5
             print("scored 0")
             flag[7] = 1
+        if player[player_no].y > 64 + 80 + 2 and flag[8] == 0:
+            score[1] += 10
+            print("scored 0")
+            flag[8] = 1
+        if player[player_no].y > 64 + 2 and flag[9] == 0:
+            score[1] += 5
+            print("scored 0")
+            flag[9] = 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
