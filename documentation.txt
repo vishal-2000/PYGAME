@@ -5,7 +5,7 @@ Documentation:
 2.	You might take few minutes to perform steps 2, 3, 4 in order to setup the suitable environment but it is decent investment for lifetime access to such open source games from any other developer like myself 
 3.	You must have a python>3 (maintaining a virtual environment is optional) environment setup in order to run this program.
 4.	Install pygame library onto your python environment
-5.	Install configparser package into your python virtual environment
+5.	Install configparser package into your python virtual environment( I guess even this is optional now that i had included the config parser file in the zip file)
   Command: pip install configparser/configParser (There might be other methods to do this and you are free to explore them!)
 6.	To run the game just open the python file named play.py using a python ide(optional: you can even use any txt editor but it must be able to build python programs) and run it or use a python interpreter
 7.	Theme: You are an alien travelling in a low flying spaceship trying to safely explore Earth. The ships and network towers are the obstacles (You’ll have to play the same level when your next turn comes)
