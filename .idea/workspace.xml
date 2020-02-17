@@ -2,34 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62df0088-7071-41dc-8592-1e59e616556e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Documentation.rtf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sounds/Ending.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sounds/Entry.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sounds/Entry_2.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sounds/hit2.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sounds/main_music.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sounds/winn.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/asteroid.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/asteroid1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/earth.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/ispaceship.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/ship.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/spaceship.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/tower.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/meteor.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/~$cumentation.rtf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/~WRL0005.tmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ending.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/config.cfg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hit2.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ispaceship.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_music.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ship.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spaceship.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing_pycharm.py" beforeDir="false" afterPath="$PROJECT_DIR$/testing_pycharm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tower.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/winn.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/~$cumentation.rtf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/~WRL0005.tmp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +108,7 @@
       <workItem from="1581792637351" duration="115000" />
       <workItem from="1581792773619" duration="2981000" />
       <workItem from="1581875021722" duration="8377000" />
-      <workItem from="1581930875333" duration="4896000" />
+      <workItem from="1581930875333" duration="5230000" />
     </task>
     <task id="LOCAL-00001" summary="Game Version 2">
       <created>1581712822073</created>
@@ -164,7 +138,14 @@
       <option name="project" value="LOCAL" />
       <updated>1581795756338</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Game Version 6">
+      <created>1581936853068</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1581936853068</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,7 +157,8 @@
     <MESSAGE value="Game Version 3" />
     <MESSAGE value="Game Version 4" />
     <MESSAGE value="Game Version 5" />
-    <option name="LAST_COMMIT_MESSAGE" value="Game Version 5" />
+    <MESSAGE value="Game Version 6" />
+    <option name="LAST_COMMIT_MESSAGE" value="Game Version 6" />
   </component>
   <component name="WindowStateProjectService">
     <state x="223" y="86" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581792987785">
